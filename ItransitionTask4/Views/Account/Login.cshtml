@@ -1,0 +1,29 @@
+@model ItransitionTask4.Models.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_Layout";
+}
+
+<form asp-action="Login" asp-controller="Account" asp-anti-forgery="true" xmlns="http://www.w3.org/1999/html">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
+    <fieldset>
+        <legend>Login</legend>
+        <div class="form-group">
+            <label class="form-label mt-4" asp-for="Email">Type your email</label>
+            <input class="form-control" type="text" asp-for="Email"/>
+            <span asp-validation-for="Email"/>
+        </div>
+        <div class="form-group">
+            <label class="form-label mt-4" asp-for="Password">Type your password</label>
+            <input class="form-control" asp-for="Password"/>
+            <span asp-validation-for="Password"/>
+        </div>
+        <br/>
+        <div>
+            <button class="btn btn-primary d-inline" type="submit">Login</button>
+            <span>or</span>
+            <a asp-action="Register">Register</a>
+        </div>
+    </fieldset>
+</form>

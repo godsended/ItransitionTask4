@@ -1,0 +1,70 @@
+﻿@model ItransitionTask4.Models.ViewModels.HomeViewModel
+
+@{
+    ViewData["Title"] = "Home";
+    int userIndex = 0;
+
+    string GetUserIndex()
+    {
+        int ans = userIndex;
+        userIndex++;
+        return ans.ToString();
+    }
+}
+<form asp-action="Index" asp-controller="Home">
+    <br/>
+    <button name="action" value="BlockUsers" type="submit" class="btn btn-danger">
+        Block
+    </button>
+    <button name="action" value="UnblockUsers" type="submit" class="bg-transparent">
+        <img class="navbar-toggler-icon" src="https://img.icons8.com/external-smashingstocks-glyph-smashing-stocks/2x/external-unlock-web-smashingstocks-glyph-smashing-stocks.png"/>
+    </button>
+    <button name="action" value="DeleteUsers" type="submit" class="bg-transparent">
+         <img class="navbar-toggler-icon" src="https://img.icons8.com/material-outlined/344/filled-trash.png"/>
+    </button>
+    <br/>
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                <div class="form-check">
+                    <input onClick="toggle(this)" class="form-check-input" type="checkbox">
+                </div>
+            </th>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Registered</th>
+            <th scope="col">Last online</th>
+            <th scope="col">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (User user in Model.Users)
+        {
+            <tr>
+                <th scope="row">
+                    <div class="form-check">
+                        <input name="@GetUserIndex()" value=@user.Id.ToString()
+                               class="form-check-input" type="checkbox">
+                    </div>
+                </th>
+                <td>@user.Id.ToString()</td>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+                <td>@user.RegistrationDateTime</td>
+                <td>@user.LastLoginDateTime</td>
+                <td>@user.State.ToString()</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</form>
+
+<script>
+function toggle(source) {
+  var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  for(var checkbox of checkboxes)
+    checkbox.checked = source.checked;
+}
+</script>
