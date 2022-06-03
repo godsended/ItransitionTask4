@@ -1,13 +1,20 @@
+using System.Net;
 using ItransitionTask4.Middlewares;
 using ItransitionTask4.Models;
 using ItransitionTask4.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.KnownProxies.Add(IPAddress.Parse("127.0.0.1"));
+    options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
+});
 builder.Services.AddDbContext<UserContext>(options => options.UseNpgsql(connection));
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
@@ -33,6 +40,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
